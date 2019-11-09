@@ -1,0 +1,209 @@
+var cam = {x: 0, y: 0, stat: false};
+var objects = [];
+
+function setup() {
+  createCanvas(1200, 1200);
+  video = createCapture(VIDEO);
+  yolo = ml5.YOLO(video, startDetecting);
+  video.hide();
+}
+
+function startDetecting() {
+  detect();
+  cam.stat = true;
+}
+
+function detect() {
+  yolo.detect(function(err, results) {
+    objects = results;
+    detect();
+  });
+}
+
+function cen(x) {
+  return (x-0.5)*2;
+}
+
+function magi(x) {
+  let sig = Math.sign(x);
+  let a = abs(x);
+  return sig*min(pow(a*2,1.4)/2,1);
+}
+
+function draw() {
+  background(214, 202, 185);
+
+  fill(105)
+  rect(0, 0, 1200, 100)
+  line(100, 0, 160, 100)
+  line(600, 0, 640, 100)
+  line(1100, 0, 1120, 100)
+
+
+  for (wallY = 100; wallY < 1200; wallY = wallY + 150) {
+    line(0, wallY, 1200, wallY)
+  }
+  for (wallX = 50; wallX < 1200; wallX = wallX + 300) {
+    for (wallY2 = 100; wallY2 < 1200; wallY2 = wallY2 + 300) {
+      line(wallX, wallY2, wallX, wallY2 + 150);
+      line(wallX + 150, wallY2 + 150, wallX + 150, wallY2 + 300)
+    }
+  }
+
+  fill(228, 220, 212)
+  rect(420, 230, 780, 900)
+
+  fill(222, 41, 16)
+  rect(460, 280, 740, 800)
+
+  fill(62, 138, 151)
+  rect(15, 230, 390, 225)
+
+  fill(220)
+  rect(900, 0, 100, 55, 0, 0, 20, 20);
+
+  fill(50)
+  ellipse(950, 70, 80, 80);
+  
+//camera
+  fill(100+(cam.stat ? 90 : 0),10,10);
+  
+  for (let i = 0; i < objects.length; i++) {
+    //console.log(objects[i]);
+    cam.x = magi(cen(objects[i].x + objects[i].w/2)) * -20;
+    cam.y = magi(cen(objects[i].y + objects[i].h/2)) * 20;
+  }
+  
+  //console.log(cam)
+  ellipse(950+cam.x, 70+cam.y, 40, 40);
+
+  fill(255)
+  //Text: Xinjiang
+  textSize(50)
+  text("新疆", 160, 360);
+
+  //Text:The Name of Xinjiang in local language 
+  fill(255)
+  textSize(20)
+  text("شىنجاڭ ئۇيغۇر ئاپتونوم رايونی", 75, 300);
+
+  //Text:Here
+  fill(235)
+  textSize(80)
+  textStyle(BOLD)
+  text("在这里", 550, 800)
+  //Text:You will be watched by millions of eyes
+  fill(235)
+  textSize(60)
+  textStyle(BOLD)
+  text("您将被千万只眼睛关注", 580, 940)
+
+  //Arrow 
+  push() //1
+  noStroke()
+  beginShape();
+  vertex(105, 390);
+  vertex(135, 375);
+  vertex(135, 383);
+  vertex(305, 383);
+  vertex(305, 397);
+  vertex(135, 397);
+  vertex(135, 405)
+  endShape();
+  pop() //1
+  //Right eye whilte
+  push() //2
+  noStroke()
+  var x1 = 550
+  var y1 = 134
+  translate(x1, y1);
+  rotate(0.5);
+  ellipse(x1, y1, 190, 270);
+  pop() //2
+  //Left eye white
+  push() //3
+  var x2 = 320
+  var y2 = 355
+  noStroke()
+  translate(x2, y2);
+  rotate(-0.5);
+  ellipse(x2, y2, 190, 270);
+  pop() //4
+  //Right eye black
+  push() //5
+  noStroke()
+  fill(20)
+  var x3 = 550
+  var y3 = 134
+  translate(x3, y3);
+  rotate(0.5);
+  ellipse(x3, y3, 140, 230);
+  pop() //5
+  //Left eye black
+  push() //6
+  fill(20)
+  var x4 = 320
+  var y4 = 355
+  noStroke()
+  translate(x4, y4);
+  rotate(-0.5);
+  ellipse(x4, y4, 140, 230);
+  pop() //6
+
+  //Right eye gold
+  push() //7
+  noStroke()
+  fill(255, 222, 0)
+  var x5 = 545
+  var y5 = 155
+  translate(x5, y5);
+  rotate(0.5);
+  ellipse(x5, y5, 100, 150);
+  pop() //8
+  //Left eye gold
+  push() //9
+  fill(255, 222, 0)
+  var x6 = 325
+  var y6 = 376
+  noStroke()
+  translate(x6, y6);
+  rotate(-0.5);
+  ellipse(x6, y6, 100, 150);
+  pop() //9
+
+  //Right eye black in gold
+  push() //10
+  noStroke()
+  fill(20)
+  var x7 = 545
+  var y7 = 155
+  translate(x7, y7);
+  rotate(0.5);
+  ellipse(x7, y7, 50, 75);
+  pop() //10
+  //Left eye black in gold
+  push() //11
+  fill(20)
+  var x8 = 325
+  var y8 = 376
+  noStroke()
+  translate(x8, y8);
+  rotate(-0.5);
+  ellipse(x8, y8, 50, 75);
+  pop() //11
+/*
+  push() //12
+  fill(20);
+  noStroke()
+  beginShape();
+  curveVertex(641, 409);
+  curveVertex(641, 409);
+  curveVertex(750, 345);
+  curveVertex(850, 405);
+  curveVertex(750, 374);
+  curveVertex(641, 409);
+  curveVertex(641, 409);
+  endShape();
+  pop() //12 
+*/
+}
